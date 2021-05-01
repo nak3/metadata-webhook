@@ -27,14 +27,6 @@ const (
 	// servingGroupName is the group name for knative labels and annotations
 	servingGroupName = "serving.knative.dev"
 
-	// servingServiceLabelKey is the label key attached to a Route and Configuration indicating by
-	// which Service they are created.
-	servingServiceLabelKey = servingGroupName + "/service"
-
-	// servingConfigurationLabelKey is the label key attached to a Revision indicating by
-	// which Configuration it is created.
-	servingConfigurationLabelKey = servingGroupName + "/configuration"
-
 	// servingRevisionLabelKey is the label key attached to k8s resources to indicate
 	// which Revision triggered their creation.
 	servingRevisionLabelKey = servingGroupName + "/revision"

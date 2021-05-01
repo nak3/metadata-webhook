@@ -15,7 +15,7 @@ This doc explains how to setup a development environment.
 
 You must install these tools:
 
-1. [`go`](https://golang.org/doc/install): The language 
+1. [`go`](https://golang.org/doc/install): The language
    `metadata-webhook` is built in
 1. [`git`](https://help.github.com/articles/set-up-git/): For source control
 

@@ -23,9 +23,6 @@ jobs:
         - v1.20.2
 
         test-suite:
-        - ./test/conformance/runtime
-        - ./test/conformance/api/v1
-        - ./test/conformance/api/v1alpha1
         - ./test/e2e
 
         include:
@@ -44,11 +41,6 @@ jobs:
           kind-version: v0.10.0
           kind-image-sha: sha256:8f7ea6e7642c0da54f04a7ee10431549c0257315b3a634f6ef2fecaaedb19bab
           cluster-suffix: c${{ github.run_id }}.local
-
-          # The tests in api/v1alpha1 require the --enable-alpha flag to be set,
-          # and alpha components to be deployed.
-        - test-suite: ./test/conformance/api/v1alpha1
-          test-flags: "--enable-alpha"
 
     env:
       GOPATH: ${{ github.workspace }}
@@ -160,6 +152,7 @@ jobs:
         set -o pipefail
 
         kubectl apply --filename https://storage.googleapis.com/knative-nightly/serving/latest/serving-crds.yaml
+        kubectl wait --for=condition=Established --all crd
         kubectl apply --filename https://storage.googleapis.com/knative-nightly/serving/latest/serving-core.yaml
 
         # Have Serving use the kingress option.
@@ -167,11 +160,6 @@ jobs:
           --namespace knative-serving \
           --type merge \
           --patch '{"data":{"ingress.class":"istio.ingress.networking.knative.dev"}}'
-
-    - name: Wait for components to be up
-      run: |
-        # We need the webhook to be up
-        kubectl wait --for=condition=Available deployment -n knative-serving --all
 
     - name: Install kingress provider (Istio)
       run: |
@@ -187,10 +175,10 @@ jobs:
         GO111MODULE: on
         GOFLAGS: -mod=vendor
       run: |
-        ko apply --platform=all -PRf config/
+        ko apply --platform=linux/amd64 -PRf config/
 
 
-    - name: Wait for Serving and KIngress to be up
+    - name: Wait for Serving and webhook to be up
       run: |
         kubectl wait pod --for=condition=Ready -n knative-serving -l '!job-name'
         kubectl wait pod --for=condition=Ready -n knative-samples -l '!job-name'

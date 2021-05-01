@@ -32,14 +32,11 @@ import (
 	"knative.dev/pkg/webhook/certificates"
 	"knative.dev/pkg/webhook/resourcesemantics"
 	"knative.dev/pkg/webhook/resourcesemantics/defaulting"
-	"knative.dev/pkg/webhook/resourcesemantics/validation"
 )
 
 var types = map[schema.GroupVersionKind]resourcesemantics.GenericCRD{
 	appsv1.SchemeGroupVersion.WithKind("Deployment"): &defaults.TargetDeployment{},
 }
-
-var callbacks = map[schema.GroupVersionKind]validation.Callback{}
 
 func NewDefaultingAdmissionController(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
 	return defaulting.NewAdmissionController(ctx,
