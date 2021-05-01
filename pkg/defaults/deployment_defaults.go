@@ -42,7 +42,7 @@ const (
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// TargetDeployment is a wrapper around Deployment for setting Istio specific defaults
+// TargetDeployment is a wrapper around Deployment.
 type TargetDeployment struct {
 	appsv1.Deployment `json:",inline"`
 }

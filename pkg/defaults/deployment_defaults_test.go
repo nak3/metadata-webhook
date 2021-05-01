@@ -64,51 +64,15 @@ func TestTargetDeploymentDefaulting(t *testing.T) {
 			appsv1.Deployment{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
-						servingRevisionLabelKey:               "foo-revision",
-						"service.istio.io/canonical-revision": "foo-revision",
+						servingRevisionLabelKey: "foo-revision",
+						"todo":                  "foo-revision",
 					},
 				},
 				Spec: appsv1.DeploymentSpec{
 					Template: v1.PodTemplateSpec{
 						ObjectMeta: metav1.ObjectMeta{
 							Labels: map[string]string{
-								"service.istio.io/canonical-revision": "foo-revision",
-							},
-						},
-					},
-				},
-			},
-		},
-	}, {
-		name: "service, config, and revision",
-		in: &TargetDeployment{
-			appsv1.Deployment{
-				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{
-						servingConfigurationLabelKey: "foo-config",
-						servingRevisionLabelKey:      "foo-revision",
-						servingServiceLabelKey:       "foo-service",
-					},
-				},
-			},
-		},
-		want: &TargetDeployment{
-			appsv1.Deployment{
-				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{
-						servingConfigurationLabelKey:          "foo-config",
-						servingRevisionLabelKey:               "foo-revision",
-						servingServiceLabelKey:                "foo-service",
-						"service.istio.io/canonical-revision": "foo-revision",
-						"service.istio.io/canonical-name":     "foo-service",
-					},
-				},
-				Spec: appsv1.DeploymentSpec{
-					Template: v1.PodTemplateSpec{
-						ObjectMeta: metav1.ObjectMeta{
-							Labels: map[string]string{
-								"service.istio.io/canonical-revision": "foo-revision",
-								"service.istio.io/canonical-name":     "foo-service",
+								"todo": "foo-revision",
 							},
 						},
 					},

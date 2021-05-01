@@ -22,6 +22,16 @@ source $(dirname $0)/../vendor/knative.dev/hack/codegen-library.sh
 
 # If we run with -mod=vendor here, then generate-groups.sh looks for vendor files in the wrong place.
 export GOFLAGS=-mod=
+# hack's codegen shell library overrides GOBIN
+# we need it on the path so run_go_tool works
+
+group "Deepcopy Gen"
+
+# Depends on generate-groups.sh to install bin/deepcopy-gen
+deepcopy-gen \
+  -O zz_generated.deepcopy \
+  --go-header-file ${REPO_ROOT_DIR}/hack/boilerplate/boilerplate.go.txt \
+  -i github.com/nak3/metadata-webhook/pkg/defaults
 
 # Make sure our dependencies are up-to-date
 ${REPO_ROOT_DIR}/hack/update-deps.sh
