@@ -1,10 +1,6 @@
 # Development
 
-This doc explains how to setup a development environment so you can get started
-[contributing](https://www.knative.dev/contributing/) to Knative
-`sample-controller`. Also take a look at:
-
-- [The pull request workflow](https://knative.dev/community/contributing/reviewing/)
+This doc explains how to setup a development environment.
 
 ## Getting started
 
@@ -15,14 +11,12 @@ This doc explains how to setup a development environment so you can get started
 1. Set up your [shell environment](#environment-setup)
 1. [Create and checkout a repo fork](#checkout-your-fork)
 
-Before submitting a PR, see also [CONTRIBUTING.md](./CONTRIBUTING.md).
-
 ### Requirements
 
 You must install these tools:
 
-1. [`go`](https://golang.org/doc/install): The language Knative
-   `sample-controller` is built in
+1. [`go`](https://golang.org/doc/install): The language 
+   `metadata-webhook` is built in
 1. [`git`](https://help.github.com/articles/set-up-git/): For source control
 
 ### Environment setup
@@ -46,7 +40,7 @@ export PATH="${PATH}:${GOPATH}/bin"
 ### Checkout your fork
 
 The Go tools require that you clone the repository to the
-`src/knative.dev/sample-controller` directory in your
+`src/github.com/nak3/metadata-webhook` directory in your
 [`GOPATH`](https://github.com/golang/go/wiki/SettingGOPATH).
 
 To check out this repository:
@@ -57,11 +51,11 @@ To check out this repository:
 1. Clone it to your machine:
 
 ```shell
-mkdir -p ${GOPATH}/src/knative.dev
-cd ${GOPATH}/src/knative.dev
-git clone git@github.com:${YOUR_GITHUB_USERNAME}/sample-controller.git
-cd sample-controller
-git remote add upstream https://github.com/knative-sandbox/sample-controller.git
+mkdir -p ${GOPATH}/src/github.com/nak3
+cd ${GOPATH}/src/github.com/nak3
+git clone git@github.com:${YOUR_GITHUB_USERNAME}/metadata-webhook.git
+cd metadata-webhook
+git remote add upstream https://github.com/nak3/metadata-webhook.git
 git remote set-url --push upstream no_push
 ```
 
