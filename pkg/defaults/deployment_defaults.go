@@ -42,20 +42,20 @@ const (
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// TarrgetDeployment is a wrapper around Deployment for setting Istio specific defaults
-type TarrgetDeployment struct {
+// TargetDeployment is a wrapper around Deployment for setting Istio specific defaults
+type TargetDeployment struct {
 	appsv1.Deployment `json:",inline"`
 }
 
 // Verify that Deployment adheres to the appropriate interfaces.
 var (
 	// Check that Deployment can be defaulted.
-	_ apis.Defaultable = (*TarrgetDeployment)(nil)
-	_ apis.Validatable = (*TarrgetDeployment)(nil)
+	_ apis.Defaultable = (*TargetDeployment)(nil)
+	_ apis.Validatable = (*TargetDeployment)(nil)
 )
 
 // SetDefaults implements apis.Defaultable
-func (r *TarrgetDeployment) SetDefaults(ctx context.Context) {
+func (r *TargetDeployment) SetDefaults(ctx context.Context) {
 	if r.Labels == nil {
 		r.Labels = make(map[string]string)
 	}
@@ -72,6 +72,6 @@ func (r *TarrgetDeployment) SetDefaults(ctx context.Context) {
 }
 
 // Validate returns nil due to no need for validation
-func (r *TarrgetDeployment) Validate(ctx context.Context) *apis.FieldError {
+func (r *TargetDeployment) Validate(ctx context.Context) *apis.FieldError {
 	return nil
 }

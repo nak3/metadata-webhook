@@ -27,15 +27,15 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestIstioDeploymentDefaulting(t *testing.T) {
+func TestTargetDeploymentDefaulting(t *testing.T) {
 	tests := []struct {
 		name string
-		in   *IstioDeployment
-		want *IstioDeployment
+		in   *TargetDeployment
+		want *TargetDeployment
 	}{{
 		name: "empty",
-		in:   &IstioDeployment{},
-		want: &IstioDeployment{
+		in:   &TargetDeployment{},
+		want: &TargetDeployment{
 			appsv1.Deployment{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{},
@@ -50,68 +50,8 @@ func TestIstioDeploymentDefaulting(t *testing.T) {
 			},
 		},
 	}, {
-		name: "serving label",
-		in: &IstioDeployment{
-			appsv1.Deployment{
-				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{
-						servingServiceLabelKey: "foo-service",
-					},
-				},
-			},
-		},
-		want: &IstioDeployment{
-			appsv1.Deployment{
-				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{
-						servingServiceLabelKey:            "foo-service",
-						"service.istio.io/canonical-name": "foo-service",
-					},
-				},
-				Spec: appsv1.DeploymentSpec{
-					Template: v1.PodTemplateSpec{
-						ObjectMeta: metav1.ObjectMeta{
-							Labels: map[string]string{
-								"service.istio.io/canonical-name": "foo-service",
-							},
-						},
-					},
-				},
-			},
-		},
-	}, {
-		name: "configuration label",
-		in: &IstioDeployment{
-			appsv1.Deployment{
-				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{
-						servingConfigurationLabelKey: "foo-config",
-					},
-				},
-			},
-		},
-		want: &IstioDeployment{
-			appsv1.Deployment{
-				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{
-						servingConfigurationLabelKey:      "foo-config",
-						"service.istio.io/canonical-name": "foo-config",
-					},
-				},
-				Spec: appsv1.DeploymentSpec{
-					Template: v1.PodTemplateSpec{
-						ObjectMeta: metav1.ObjectMeta{
-							Labels: map[string]string{
-								"service.istio.io/canonical-name": "foo-config",
-							},
-						},
-					},
-				},
-			},
-		},
-	}, {
 		name: "revision label",
-		in: &IstioDeployment{
+		in: &TargetDeployment{
 			appsv1.Deployment{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
@@ -120,7 +60,7 @@ func TestIstioDeploymentDefaulting(t *testing.T) {
 				},
 			},
 		},
-		want: &IstioDeployment{
+		want: &TargetDeployment{
 			appsv1.Deployment{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
@@ -141,7 +81,7 @@ func TestIstioDeploymentDefaulting(t *testing.T) {
 		},
 	}, {
 		name: "service, config, and revision",
-		in: &IstioDeployment{
+		in: &TargetDeployment{
 			appsv1.Deployment{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
@@ -152,7 +92,7 @@ func TestIstioDeploymentDefaulting(t *testing.T) {
 				},
 			},
 		},
-		want: &IstioDeployment{
+		want: &TargetDeployment{
 			appsv1.Deployment{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
@@ -190,7 +130,7 @@ func TestIstioDeploymentDefaulting(t *testing.T) {
 }
 
 func TestValidate(t *testing.T) {
-	in := &IstioDeployment{}
+	in := &TargetDeployment{}
 
 	if in.Validate(context.Background()) != nil {
 		t.Error("Validate should have returned nil")
@@ -201,10 +141,10 @@ func TestDeepCopyObject(t *testing.T) {
 
 	tests := []struct {
 		name string
-		in   *IstioDeployment
+		in   *TargetDeployment
 	}{{
 		name: "with name",
-		in: &IstioDeployment{
+		in: &TargetDeployment{
 			appsv1.Deployment{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "foo-deployment",
