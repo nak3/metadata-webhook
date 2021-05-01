@@ -27,8 +27,10 @@ export GOFLAGS=-mod=
 
 group "Deepcopy Gen"
 
+go install k8s.io/code-generator/cmd/deepcopy-gen
+
 # Depends on generate-groups.sh to install bin/deepcopy-gen
-deepcopy-gen \
+${GOPATH}/bin/deepcopy-gen \
   -O zz_generated.deepcopy \
   --go-header-file ${REPO_ROOT_DIR}/hack/boilerplate/boilerplate.go.txt \
   -i github.com/nak3/metadata-webhook/pkg/defaults
