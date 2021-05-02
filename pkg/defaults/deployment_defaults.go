@@ -24,12 +24,8 @@ import (
 )
 
 const (
-	// servingGroupName is the group name for knative labels and annotations
-	servingGroupName = "serving.knative.dev"
-
-	// servingRevisionLabelKey is the label key attached to k8s resources to indicate
-	// which Revision triggered their creation.
-	servingRevisionLabelKey = servingGroupName + "/revision"
+	sidecarInject                = "sidecar.istio.io/inject"
+	sidecarrewriteAppHTTPProbers = "sidecar.istio.io/rewriteAppHTTPProbers"
 )
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -48,19 +44,12 @@ var (
 
 // SetDefaults implements apis.Defaultable
 func (r *TargetDeployment) SetDefaults(ctx context.Context) {
-	if r.Labels == nil {
-		r.Labels = make(map[string]string)
+	if r.Spec.Template.Annotations == nil {
+		r.Spec.Template.Annotations = make(map[string]string)
 	}
 
-	if r.Spec.Template.Labels == nil {
-		r.Spec.Template.Labels = make(map[string]string)
-	}
-
-	revisionName := r.Labels[servingRevisionLabelKey]
-	if revisionName != "" {
-		r.Labels["todo"] = revisionName
-		r.Spec.Template.Labels["todo"] = revisionName
-	}
+	r.Spec.Template.Annotations[sidecarInject] = "true"
+	r.Spec.Template.Annotations[sidecarrewriteAppHTTPProbers] = "true"
 }
 
 // Validate returns nil due to no need for validation
