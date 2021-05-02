@@ -201,7 +201,8 @@ jobs:
               - image: docker.io/openshift/hello-openshift
                 name: container
         EOF
-        kubectl wait deploy --for=condition=Available -n serving-tests -l '!job-name'
+        kubectl wait ksvc --for=condition=Ready -n serving-tests hello
+        kubectl wait deploy --for=condition=Available -n serving-tests hello-1-deployment
         kubectl get -n serving-tests deploy hello-1-deployment -o=jsonpath='{.spec.template.metadata.annotations}' \
                     | grep '"sidecar.istio.io/inject":"true","sidecar.istio.io/rewriteAppHTTPProbers":"true"' || exit 1
  
