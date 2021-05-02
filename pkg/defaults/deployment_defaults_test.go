@@ -37,42 +37,45 @@ func TestTargetDeploymentDefaulting(t *testing.T) {
 		in:   &TargetDeployment{},
 		want: &TargetDeployment{
 			appsv1.Deployment{
-				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{},
-				},
+				ObjectMeta: metav1.ObjectMeta{},
 				Spec: appsv1.DeploymentSpec{
 					Template: v1.PodTemplateSpec{
 						ObjectMeta: metav1.ObjectMeta{
-							Labels: map[string]string{},
+							Annotations: map[string]string{
+								sidecarInject:                "true",
+								sidecarrewriteAppHTTPProbers: "true",
+							},
 						},
 					},
 				},
 			},
 		},
 	}, {
-		name: "revision label",
+		name: "override",
 		in: &TargetDeployment{
 			appsv1.Deployment{
-				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{
-						servingRevisionLabelKey: "foo-revision",
+				ObjectMeta: metav1.ObjectMeta{},
+				Spec: appsv1.DeploymentSpec{
+					Template: v1.PodTemplateSpec{
+						ObjectMeta: metav1.ObjectMeta{
+							Annotations: map[string]string{
+								sidecarInject:                "false",
+								sidecarrewriteAppHTTPProbers: "false",
+							},
+						},
 					},
 				},
 			},
 		},
 		want: &TargetDeployment{
 			appsv1.Deployment{
-				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{
-						servingRevisionLabelKey: "foo-revision",
-						"todo":                  "foo-revision",
-					},
-				},
+				ObjectMeta: metav1.ObjectMeta{},
 				Spec: appsv1.DeploymentSpec{
 					Template: v1.PodTemplateSpec{
 						ObjectMeta: metav1.ObjectMeta{
-							Labels: map[string]string{
-								"todo": "foo-revision",
+							Annotations: map[string]string{
+								sidecarInject:                "true",
+								sidecarrewriteAppHTTPProbers: "true",
 							},
 						},
 					},
