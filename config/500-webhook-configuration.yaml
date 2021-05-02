@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: admissionregistration.k8s.io/v1beta1
+apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
-  name: defaulting.webhook.knative-samples.knative.dev
+  name: webhook.metadata-webhook.example.com
   labels:
     samples.knative.dev/release: devel
 webhooks:
@@ -24,51 +24,16 @@ webhooks:
   clientConfig:
     service:
       name: webhook
-      namespace: knative-samples
+      namespace: serving-tests
   failurePolicy: Fail
-  name: defaulting.webhook.knative-samples.knative.dev
----
-apiVersion: admissionregistration.k8s.io/v1beta1
-kind: ValidatingWebhookConfiguration
-metadata:
-  name: validation.webhook.knative-samples.knative.dev
-  labels:
-    samples.knative.dev/release: devel
-webhooks:
-- admissionReviewVersions:
-  - v1beta1
-  clientConfig:
-    service:
-      name: webhook
-      namespace: knative-samples
-  failurePolicy: Fail
-  name: validation.webhook.knative-samples.knative.dev
----
-apiVersion: admissionregistration.k8s.io/v1beta1
-kind: ValidatingWebhookConfiguration
-metadata:
-  name: config.webhook.knative-samples.knative.dev
-  labels:
-    serving.knative.dev/release: devel
-webhooks:
-- admissionReviewVersions:
-  - v1beta1
-  clientConfig:
-    service:
-      name: webhook
-      namespace: knative-samples
-  failurePolicy: Fail
-  name: config.webhook.knative-samples.knative.dev
-  namespaceSelector:
-    matchExpressions:
-    - key: samples.knative.dev/release
-      operator: Exists
+  sideEffects: None
+  name: webhook.metadata-webhook.example.com
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: webhook-certs
-  namespace: knative-samples
+  namespace: serving-tests
   labels:
     samples.knative.dev/release: devel
 # The data is populated at install time.

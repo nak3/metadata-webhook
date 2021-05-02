@@ -18,7 +18,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/nak3/metadata-webhook/pkg/defaults"
 	appsv1 "k8s.io/api/apps/v1"
@@ -27,7 +26,6 @@ import (
 	"knative.dev/pkg/controller"
 	"knative.dev/pkg/injection/sharedmain"
 	"knative.dev/pkg/signals"
-	"knative.dev/pkg/system"
 	"knative.dev/pkg/webhook"
 	"knative.dev/pkg/webhook/certificates"
 	"knative.dev/pkg/webhook/resourcesemantics"
@@ -42,7 +40,7 @@ func NewDefaultingAdmissionController(ctx context.Context, cmw configmap.Watcher
 	return defaulting.NewAdmissionController(ctx,
 
 		// Name of the resource webhook.
-		fmt.Sprintf("defaulting.webhook.%s.knative.dev", system.Namespace()),
+		"webhook.metadata-webhook.example.com",
 
 		// The path on which to serve the webhook.
 		"/defaulting",

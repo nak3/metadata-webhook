@@ -181,7 +181,7 @@ jobs:
     - name: Wait for Serving and webhook to be up
       run: |
         kubectl wait pod --for=condition=Ready -n knative-serving -l '!job-name'
-        kubectl wait pod --for=condition=Ready -n knative-samples -l '!job-name'
+        kubectl wait pod --for=condition=Ready -n serving-tests -l '!job-name'
         kubectl wait pod --for=condition=Ready -n "${GATEWAY_NAMESPACE_OVERRIDE}" -l '!job-name'
 
 #    - name: Run e2e Tests
