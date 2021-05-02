@@ -184,6 +184,29 @@ jobs:
         kubectl wait pod --for=condition=Ready -n serving-tests -l '!job-name'
         kubectl wait pod --for=condition=Ready -n "${GATEWAY_NAMESPACE_OVERRIDE}" -l '!job-name'
 
+    - name: Run simple test
+      run: |
+        cat <<EOF | kubectl apply -f -
+        apiVersion: serving.knative.dev/v1
+        kind: Service
+        metadata:
+          name: hello
+          namespace: serving-tests
+        spec:
+          template:
+            metadata:
+              name: hello-1
+            spec:
+              containers:
+              - image: docker.io/openshift/hello-openshift
+                name: container
+        EOF
+        sleep 5
+        kubectl wait deploy --for=condition=Available -n serving-tests hello-1-deployment
+        kubectl get -n serving-tests deploy hello-1-deployment -o=jsonpath='{.spec.template.metadata.annotations}' \
+                    | grep '"sidecar.istio.io/inject":"true","sidecar.istio.io/rewriteAppHTTPProbers":"true"' || exit 1
+ 
+
 #    - name: Run e2e Tests
 #      run: |
 #        set -x
