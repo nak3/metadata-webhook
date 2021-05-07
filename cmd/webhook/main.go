@@ -20,7 +20,6 @@ import (
 	"context"
 
 	"github.com/nak3/metadata-webhook/pkg/defaults"
-	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"knative.dev/pkg/configmap"
 	"knative.dev/pkg/controller"
@@ -34,8 +33,7 @@ import (
 )
 
 var types = map[schema.GroupVersionKind]resourcesemantics.GenericCRD{
-	appsv1.SchemeGroupVersion.WithKind("Deployment"): &defaults.TargetDeployment{},
-	v1.SchemeGroupVersion.WithKind("Service"):        &defaults.TargetKService{},
+	v1.SchemeGroupVersion.WithKind("Service"): &defaults.TargetKService{},
 }
 
 func NewDefaultingAdmissionController(ctx context.Context, cmw configmap.Watcher) *controller.Impl {

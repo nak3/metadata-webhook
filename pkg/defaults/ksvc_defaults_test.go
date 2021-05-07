@@ -41,7 +41,18 @@ func TestTargetKServiceDefaulting(t *testing.T) {
 						openshiftPassthrough: "true",
 					},
 				},
-				Spec: servingv1.ServiceSpec{},
+				Spec: servingv1.ServiceSpec{
+					ConfigurationSpec: servingv1.ConfigurationSpec{
+						Template: servingv1.RevisionTemplateSpec{
+							ObjectMeta: metav1.ObjectMeta{
+								Annotations: map[string]string{
+									sidecarInject:                "true",
+									sidecarrewriteAppHTTPProbers: "true",
+								},
+							},
+						},
+					},
+				},
 			},
 		},
 	}, {
@@ -59,7 +70,18 @@ func TestTargetKServiceDefaulting(t *testing.T) {
 						openshiftPassthrough: "true",
 					},
 				},
-				Spec: servingv1.ServiceSpec{},
+				Spec: servingv1.ServiceSpec{
+					ConfigurationSpec: servingv1.ConfigurationSpec{
+						Template: servingv1.RevisionTemplateSpec{
+							ObjectMeta: metav1.ObjectMeta{
+								Annotations: map[string]string{
+									sidecarInject:                "true",
+									sidecarrewriteAppHTTPProbers: "true",
+								},
+							},
+						},
+					},
+				},
 			},
 		},
 	}}
