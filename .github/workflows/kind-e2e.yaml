@@ -205,6 +205,8 @@ jobs:
         kubectl wait deploy --for=condition=Available -n serving-tests hello-1-deployment
         kubectl get -n serving-tests deploy hello-1-deployment -o=jsonpath='{.spec.template.metadata.annotations}' \
                     | grep '"sidecar.istio.io/inject":"true","sidecar.istio.io/rewriteAppHTTPProbers":"true"' || exit 1
+        kubectl get -n serving-tests ksvc hello -o=jsonpath='{.metadata.annotations}' \
+                    | grep '"serving.knative.openshift.io/enablePassthrough":"true"' || exit 1
  
 
 #    - name: Run e2e Tests
