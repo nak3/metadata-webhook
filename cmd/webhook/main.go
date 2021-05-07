@@ -30,7 +30,7 @@ import (
 	"knative.dev/pkg/webhook/certificates"
 	"knative.dev/pkg/webhook/resourcesemantics"
 	"knative.dev/pkg/webhook/resourcesemantics/defaulting"
-	"knative.dev/serving/pkg/apis/serving/v1"
+	v1 "knative.dev/serving/pkg/apis/serving/v1"
 )
 
 var types = map[schema.GroupVersionKind]resourcesemantics.GenericCRD{
