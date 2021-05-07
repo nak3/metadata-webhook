@@ -25,6 +25,9 @@ import (
 
 const (
 	openshiftPassthrough = "serving.knative.openshift.io/enablePassthrough"
+
+	sidecarInject                = "sidecar.istio.io/inject"
+	sidecarrewriteAppHTTPProbers = "sidecar.istio.io/rewriteAppHTTPProbers"
 )
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -47,6 +50,13 @@ func (r *TargetKService) SetDefaults(ctx context.Context) {
 		r.Annotations = make(map[string]string)
 	}
 	r.Annotations[openshiftPassthrough] = "true"
+
+	if r.Spec.Template.Annotations == nil {
+		r.Spec.Template.Annotations = make(map[string]string)
+	}
+
+	r.Spec.Template.Annotations[sidecarInject] = "true"
+	r.Spec.Template.Annotations[sidecarrewriteAppHTTPProbers] = "true"
 }
 
 // Validate returns nil due to no need for validation

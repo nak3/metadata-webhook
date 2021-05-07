@@ -4,7 +4,6 @@ go 1.15
 
 require (
 	github.com/google/go-cmp v0.5.5
-	k8s.io/api v0.19.7
 	k8s.io/apimachinery v0.19.7
 	k8s.io/code-generator v0.19.7
 	k8s.io/kube-openapi v0.0.0-20210113233702-8566a335510f
