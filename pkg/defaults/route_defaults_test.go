@@ -26,75 +26,39 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestTargetKServiceDefaulting(t *testing.T) {
+func TestTargetRouteDefaulting(t *testing.T) {
 	tests := []struct {
 		name string
-		in   *TargetKService
-		want *TargetKService
+		in   *TargetRoute
+		want *TargetRoute
 	}{{
 		name: "empty",
-		in:   &TargetKService{},
-		want: &TargetKService{
-			servingv1.Service{
+		in:   &TargetRoute{},
+		want: &TargetRoute{
+			servingv1.Route{
 				ObjectMeta: metav1.ObjectMeta{
 					Annotations: map[string]string{
 						openshiftPassthrough: "true",
-					},
-				},
-				Spec: servingv1.ServiceSpec{
-					ConfigurationSpec: servingv1.ConfigurationSpec{
-						Template: servingv1.RevisionTemplateSpec{
-							ObjectMeta: metav1.ObjectMeta{
-								Annotations: map[string]string{
-									sidecarInject:                "true",
-									sidecarrewriteAppHTTPProbers: "true",
-								},
-							},
-						},
 					},
 				},
 			},
 		},
 	}, {
 		name: "override",
-		in: &TargetKService{
-			servingv1.Service{
+		in: &TargetRoute{
+			servingv1.Route{
 				ObjectMeta: metav1.ObjectMeta{
 					Annotations: map[string]string{
 						openshiftPassthrough: "false",
 					},
 				},
-				Spec: servingv1.ServiceSpec{
-					ConfigurationSpec: servingv1.ConfigurationSpec{
-						Template: servingv1.RevisionTemplateSpec{
-							ObjectMeta: metav1.ObjectMeta{
-								Annotations: map[string]string{
-									sidecarInject:                "false",
-									sidecarrewriteAppHTTPProbers: "false",
-								},
-							},
-						},
-					},
-				},
 			},
 		},
-		want: &TargetKService{
-			servingv1.Service{
+		want: &TargetRoute{
+			servingv1.Route{
 				ObjectMeta: metav1.ObjectMeta{
 					Annotations: map[string]string{
 						openshiftPassthrough: "true",
-					},
-				},
-				Spec: servingv1.ServiceSpec{
-					ConfigurationSpec: servingv1.ConfigurationSpec{
-						Template: servingv1.RevisionTemplateSpec{
-							ObjectMeta: metav1.ObjectMeta{
-								Annotations: map[string]string{
-									sidecarInject:                "true",
-									sidecarrewriteAppHTTPProbers: "true",
-								},
-							},
-						},
 					},
 				},
 			},
@@ -113,23 +77,23 @@ func TestTargetKServiceDefaulting(t *testing.T) {
 	}
 }
 
-func TestValidateKService(t *testing.T) {
-	in := &TargetKService{}
+func TestValidateRoute(t *testing.T) {
+	in := &TargetRoute{}
 
 	if in.Validate(context.Background()) != nil {
 		t.Error("Validate should have returned nil")
 	}
 }
 
-func TestDeepCopyObjectKService(t *testing.T) {
+func TestDeepCopyObjectRoute(t *testing.T) {
 
 	tests := []struct {
 		name string
-		in   *TargetKService
+		in   *TargetRoute
 	}{{
 		name: "with name",
-		in: &TargetKService{
-			servingv1.Service{
+		in: &TargetRoute{
+			servingv1.Route{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "foo-deployment",
 				},

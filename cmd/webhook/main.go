@@ -33,7 +33,9 @@ import (
 )
 
 var types = map[schema.GroupVersionKind]resourcesemantics.GenericCRD{
-	v1.SchemeGroupVersion.WithKind("Service"): &defaults.TargetKService{},
+	v1.SchemeGroupVersion.WithKind("Service"):       &defaults.TargetKService{},
+	v1.SchemeGroupVersion.WithKind("Route"):         &defaults.TargetRoute{},
+	v1.SchemeGroupVersion.WithKind("Configuration"): &defaults.TargetConfiguration{},
 }
 
 func NewDefaultingAdmissionController(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
