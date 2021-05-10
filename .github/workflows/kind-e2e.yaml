@@ -205,6 +205,36 @@ jobs:
                     | grep '"sidecar.istio.io/inject":"true","sidecar.istio.io/rewriteAppHTTPProbers":"true"' || exit 1
         kubectl get -n serving-tests ksvc hello -o=jsonpath='{.metadata.annotations}' \
                     | grep '"serving.knative.openshift.io/enablePassthrough":"true"' || exit 1
+
+        cat <<EOF | kubectl apply -f -
+        apiVersion: serving.knative.dev/v1
+        kind: Configuration
+        metadata:
+          name: configuration-example
+          namespace: serving-tests
+        spec:
+          template:
+            spec:
+              containers:
+              - image: docker.io/openshift/hello-openshift
+        EOF
+
+        cat <<EOF | kubectl apply -f -
+        apiVersion: serving.knative.dev/v1
+        kind: Route
+        metadata:
+          name: route-example
+          namespace: serving-tests
+        spec:
+          traffic:
+          - configurationName: configuration-example
+            percent: 100
+        EOF
+
+        kubectl get -n serving-tests configuration configuration-example -o=jsonpath='{.spec.template.metadata.annotations}' \
+                    | grep '"sidecar.istio.io/inject":"true","sidecar.istio.io/rewriteAppHTTPProbers":"true"' || exit 1
+        kubectl get -n serving-tests route route-example -o=jsonpath='{.metadata.annotations}' \
+                    | grep '"serving.knative.openshift.io/enablePassthrough":"true"' || exit 1
  
 
 #    - name: Run e2e Tests
