@@ -28,6 +28,9 @@ const (
 
 	sidecarInject                = "sidecar.istio.io/inject"
 	sidecarrewriteAppHTTPProbers = "sidecar.istio.io/rewriteAppHTTPProbers"
+
+	maistraProxyEnv          = "sidecar.maistra.io/proxyEnv"
+	terminationDrainDuration = "{ \"TERMINATION_DRAIN_DURATION_SECONDS\": \"10\" }"
 )
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -57,6 +60,7 @@ func (r *TargetKService) SetDefaults(ctx context.Context) {
 
 	r.Spec.Template.Annotations[sidecarInject] = "true"
 	r.Spec.Template.Annotations[sidecarrewriteAppHTTPProbers] = "true"
+	r.Spec.Template.Annotations[maistraProxyEnv] = terminationDrainDuration
 }
 
 // Validate returns nil due to no need for validation
