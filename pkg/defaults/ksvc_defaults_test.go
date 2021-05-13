@@ -48,6 +48,7 @@ func TestTargetKServiceDefaulting(t *testing.T) {
 								Annotations: map[string]string{
 									sidecarInject:                "true",
 									sidecarrewriteAppHTTPProbers: "true",
+									maistraProxyEnv:              terminationDrainDuration,
 								},
 							},
 						},
@@ -71,6 +72,7 @@ func TestTargetKServiceDefaulting(t *testing.T) {
 								Annotations: map[string]string{
 									sidecarInject:                "false",
 									sidecarrewriteAppHTTPProbers: "false",
+									maistraProxyEnv:              "{ \"TERMINATION_DRAIN_DURATION_SECONDS\": \"5\" }",
 								},
 							},
 						},
@@ -92,6 +94,7 @@ func TestTargetKServiceDefaulting(t *testing.T) {
 								Annotations: map[string]string{
 									sidecarInject:                "true",
 									sidecarrewriteAppHTTPProbers: "true",
+									maistraProxyEnv:              terminationDrainDuration,
 								},
 							},
 						},
