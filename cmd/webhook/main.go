@@ -30,12 +30,14 @@ import (
 	"knative.dev/pkg/webhook/resourcesemantics"
 	"knative.dev/pkg/webhook/resourcesemantics/defaulting"
 	v1 "knative.dev/serving/pkg/apis/serving/v1"
+	v1alpha1 "knative.dev/serving/pkg/apis/serving/v1alpha1"
 )
 
 var types = map[schema.GroupVersionKind]resourcesemantics.GenericCRD{
-	v1.SchemeGroupVersion.WithKind("Service"):       &defaults.TargetKService{},
-	v1.SchemeGroupVersion.WithKind("Route"):         &defaults.TargetRoute{},
-	v1.SchemeGroupVersion.WithKind("Configuration"): &defaults.TargetConfiguration{},
+	v1.SchemeGroupVersion.WithKind("Service"):             &defaults.TargetKService{},
+	v1.SchemeGroupVersion.WithKind("Route"):               &defaults.TargetRoute{},
+	v1.SchemeGroupVersion.WithKind("Configuration"):       &defaults.TargetConfiguration{},
+	v1alpha1.SchemeGroupVersion.WithKind("DomainMapping"): &defaults.TargetDomainMapping{},
 }
 
 func NewDefaultingAdmissionController(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
