@@ -15,7 +15,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webhook
+  name: metadata-webhook
   namespace: serving-tests
   labels:
     samples.knative.dev/release: devel
