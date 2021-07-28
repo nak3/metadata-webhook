@@ -152,10 +152,8 @@ jobs:
         set -o pipefail
 
         kubectl apply --filename https://storage.googleapis.com/knative-nightly/serving/latest/serving-crds.yaml
-        kubectl apply --filename https://storage.googleapis.com/knative-nightly/serving/latest/serving-domainmapping-crds.yaml
         kubectl wait --for=condition=Established --all crd
         kubectl apply --filename https://storage.googleapis.com/knative-nightly/serving/latest/serving-core.yaml
-        kubectl apply --filename https://storage.googleapis.com/knative-nightly/serving/latest/serving-domainmapping.yaml
 
         # Have Serving use the kingress option.
         kubectl patch configmap/config-network \
