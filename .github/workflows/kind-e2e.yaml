@@ -201,8 +201,11 @@ jobs:
               - image: docker.io/openshift/hello-openshift
                 name: container
         EOF
+
+        echo "verifying in ksvc .spec.template.metadata.annotations"
         kubectl get -n serving-tests ksvc hello -o=jsonpath='{.spec.template.metadata.annotations}' \
                     | grep '"sidecar.istio.io/inject":"true","sidecar.istio.io/rewriteAppHTTPProbers":"true"' || exit 1
+        echo "verifying in ksvc .metadata.annotations"
         kubectl get -n serving-tests ksvc hello -o=jsonpath='{.metadata.annotations}' \
                     | grep '"serving.knative.openshift.io/enablePassthrough":"true"' || exit 1
 
@@ -244,11 +247,15 @@ jobs:
             apiVersion: serving.knative.dev/v1
         EOF
 
+        echo "verifying in configuration"
         kubectl get -n serving-tests configuration configuration-example -o=jsonpath='{.spec.template.metadata.annotations}' \
                     | grep '"sidecar.istio.io/inject":"true","sidecar.istio.io/rewriteAppHTTPProbers":"true"' || exit 1
+
+        echo "verifying in route"
         kubectl get -n serving-tests route route-example -o=jsonpath='{.metadata.annotations}' \
                     | grep '"serving.knative.openshift.io/enablePassthrough":"true"' || exit 1
 
+        echo "verifying in domainmapping"
         kubectl get -n serving-tests domainmapping mydomain.example.com -o=jsonpath='{.metadata.annotations}' \
                     | grep '"serving.knative.openshift.io/enablePassthrough":"true"' || exit 1
  
